@@ -1,0 +1,244 @@
+
+  
+  .spark-app {
+    min-height: 100vh;
+    width: 100%;
+    background: var(--spark-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+  }
+  
+
+  .spark-container {
+    width: 100%;
+    max-width: 900px;
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 3rem 3rem 2.5rem;
+    box-shadow:
+      0 1px 2px rgba(38, 84, 124, 0.04),
+      0 20px 60px rgba(38, 84, 124, 0.08);
+    border: 1px solid var(--spark-border);
+  }
+  
+
+  .spark-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 3rem;
+  }
+  
+  .spark-logo {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .spark-logo svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 2px 6px rgba(38, 84, 124, 0.25));
+  }
+  
+  .spark-wordmark {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.35em;
+    color: var(--spark-navy);
+  }
+  
+
+  .spark-hero {
+    margin-bottom: 3rem;
+  }
+  
+  .spark-eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--spark-navy);
+    background: rgba(38, 84, 124, 0.08);
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    margin-bottom: 1.25rem;
+  }
+  
+  .spark-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--spark-dark);
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+  
+  .spark-title-accent {
+    color: var(--spark-navy);
+    position: relative;
+    display: inline-block;
+  }
+  
+  .spark-title-accent::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.05em;
+    height: 0.25em;
+    background: var(--spark-yellow);
+    z-index: -1;
+    opacity: 0.55;
+    border-radius: 2px;
+  }
+  
+  .spark-subtitle {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--spark-muted);
+    max-width: 600px;
+  }
+  
+  /* ===== Cards ===== */
+  .spark-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .spark-card {
+    background: var(--spark-light);
+    border: 1px solid var(--spark-border);
+    border-radius: 14px;
+    padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .spark-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(38, 84, 124, 0.08);
+  }
+  
+  .spark-card-dot {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-bottom: 0.75rem;
+  }
+  
+  .spark-card-dot--coral { background: var(--spark-coral); }
+  .spark-card-dot--navy { background: var(--spark-navy); }
+  .spark-card-dot--yellow { background: var(--spark-yellow); }
+  
+  .spark-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--spark-dark);
+    margin-bottom: 0.25rem;
+  }
+  
+  .spark-card p {
+    font-size: 0.85rem;
+    color: var(--spark-muted);
+  }
+  
+  /* ===== Reminder ===== */
+  .spark-reminder {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    background: rgba(38, 84, 124, 0.04);
+    border-left: 3px solid var(--spark-yellow);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .spark-reminder-icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.15rem;
+  }
+  
+  .spark-reminder-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .spark-reminder-body h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--spark-navy);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.01em;
+  }
+  
+  .spark-reminder-body p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--spark-dark);
+    opacity: 0.85;
+  }
+  
+  /* ===== Footer ===== */
+  .spark-footer {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--spark-border);
+    font-size: 0.85rem;
+    color: var(--spark-muted);
+  }
+  
+  .spark-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--spark-coral);
+    box-shadow: 0 0 0 0 rgba(255, 140, 102, 0.5);
+    animation: spark-pulse 2s infinite;
+  }
+  
+  @keyframes spark-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 140, 102, 0.5); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 140, 102, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 140, 102, 0); }
+  }
+  
+  /* ===== Responsive ===== */
+  @media (max-width: 640px) {
+    .spark-container {
+      padding: 2rem 1.5rem;
+      border-radius: 20px;
+    }
+  
+    .spark-brand {
+      margin-bottom: 2rem;
+    }
+  
+    .spark-hero {
+      margin-bottom: 2rem;
+    }
+  
+    .spark-cards {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+  
+    .spark-reminder {
+      padding: 1rem 1.2rem;
+    }
+  }

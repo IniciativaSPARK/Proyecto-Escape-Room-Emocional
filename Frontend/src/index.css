@@ -1,0 +1,32 @@
+/* ========================================
+   SPARK — Escape Room Psicológico
+   Paleta:
+   - Navy   #26547C
+   - Yellow #FFD166
+   - Coral  #FF8C66
+   - Light  #F5F5F5
+   - Dark   #222222
+   ======================================== */
+
+:root {
+  --spark-navy: #26547C;
+  --spark-yellow: #FFD166;
+  --spark-coral: #FF8C66;
+  --spark-light: #F5F5F5;
+  --spark-dark: #222222;
+  --spark-muted: #6B7280;
+  --spark-border: rgba(34, 34, 34, 0.08);
+}
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: var(--spark-light);
+  color: var(--spark-dark);
+}

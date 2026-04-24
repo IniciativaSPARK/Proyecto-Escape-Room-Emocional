@@ -12,15 +12,27 @@ Ya lo dije en la reunión y lo repito aquí: lo que importa no es que el product
 
 🧠 ¿Qué estamos construyendo?
 Una plataforma donde psicólogos diseñan conversaciones guiadas por IA, y usuarios las completan de forma asíncrona. Al terminar, el psicólogo recibe la transcripción completa más un análisis automático de la sesión.
-Casos de uso
 
+Casos de uso
 Antes de la primera cita — el paciente completa la conversación antes de su primera consulta, y el psicólogo llega con contexto.
 Entre sesiones — pacientes en terapia activa responden periódicamente, y el psicólogo ve patrones a lo largo del tiempo.
 Autoexploración — personas que quieren entender qué sienten antes de decidir ir a terapia.
 
 
 🛠 Stack
-CapaTecnologíaFrontendReact + Vite, hospedado en VercelBackendNode.js + Express, hospedado en RailwayBase de datosPostgreSQL (Railway)AuthJWT + bcrypt (implementación propia)LLMClaude API (Anthropic)StreamingServer-Sent Events (SSE)
+CapaTecnología
+
+Frontend
+React + Vite, hospedado en Vercel
+
+Backend
+Node.js + Express, hospedado en Railway
+
+Base de datos
+PostgreSQL (Railway)
+AuthJWT + bcrypt (implementación propia)
+LLMClaude API (Anthropic)
+
 
 🌿 Sobre este repositorio
 Esta es la rama de producción (main). Todo lo que vive acá es el código que termina desplegado.
@@ -35,9 +47,11 @@ El fork solo aplica cuando alguien externo quiere contribuir. Como parte del equ
 1. Clona el repositorio
 bashgit clone [https://github.com/[org]/escape-room-psicologico.git](https://github.com/IniciativaSPARK/Proyecto-Escape-Room-Emocional.git)
 cd escape-room-psicologico
+
 2. Crea tu propia rama
 Nunca trabajes directo en main. Crea una rama con tu nombre y lo que vas a hacer:
 bashgit checkout -b feature/[tu-nombre]-[area]
+
 Ejemplos:
 bashgit checkout -b feature/juan-auth
 git checkout -b feature/maria-chat-engine
@@ -66,7 +80,6 @@ Yo reviso, damos feedback, y hacemos merge juntos.
 
 ⚠️ Todo PR lo reviso yo antes del merge. Sin excepciones.
 
-
 📏 Reglas no negociables
 
 main es producción. No se commitea nada directo. Nunca.
@@ -79,7 +92,7 @@ Si estás atascado más de 45 minutos, pregunta. Perder una tarde entera peleand
 💬 Comunicación
 
 Dudas rápidas, bloqueos, preguntas de implementación → Grupo de WhatsApp del equipo
-Discusiones técnicas largas → Comentarios en el PR o Issues de GitHub
+Discusiones técnicas largas  → Comentarios en el PR o Issues de GitHub
 Reuniones del equipo → Calendario compartido
 
 Cualquier duda, por mínima que parezca, escríbela en el WhatsApp. Prefiero responder 20 preguntas "tontas" a que pierdas un día entero atorado.
