@@ -33,7 +33,7 @@ El fork solo aplica cuando alguien externo quiere contribuir. Como parte del equ
 
 🚀 Cómo empezar
 1. Clona el repositorio
-bashgit clone https://github.com/[org]/escape-room-psicologico.git
+bashgit clone [https://github.com/[org]/escape-room-psicologico.git](https://github.com/IniciativaSPARK/Proyecto-Escape-Room-Emocional.git)
 cd escape-room-psicologico
 2. Crea tu propia rama
 Nunca trabajes directo en main. Crea una rama con tu nombre y lo que vas a hacer:
