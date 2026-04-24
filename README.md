@@ -33,12 +33,12 @@ Una plataforma donde **psicólogos** diseñan conversaciones guiadas por IA, y *
 
 ## 🛠 Stack
 
-| Capa | Tecnología |
-| Frontend | React + Vite, hospedado en **Vercel** |
-| Backend | Node.js + Express, hospedado en **Railway** |
-| Base de datos | **PostgreSQL** (Railway) |
-| Auth | **JWT + bcrypt** (implementación propia) |
-| LLM | **GEMINI API** (Google) |
+Capa             Tecnología 
+Frontend         React + Vite, hospedado en **Vercel** 
+Backend          Node.js + Express, hospedado en **Railway** 
+Base de datos    **PostgreSQL** (Railway) 
+Auth             **JWT + bcrypt** (implementación propia) 
+LLM              **GEMINI API** (Google) 
 
 ---
 
@@ -107,7 +107,7 @@ Cuando termines una feature o quieras que revise tu avance:
 3. Asigname como reviewer.
 4. Yo reviso, damos feedback, y hacemos merge juntos.
 
-> ⚠️ **Todo PR lo reviso yo antes del merge. Sin excepciones.**
+> ⚠️ **Todo PR se revisa antes del merge. Sin excepciones.**
 
 ---
 
