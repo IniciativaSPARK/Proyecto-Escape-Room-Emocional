@@ -1,0 +1,23 @@
+  .splash-logo-anim {
+  width: 120px;        /* tamaño controlado */
+  max-width: 40vw;     /* responsive en móviles */
+  height: auto;        /* mantiene proporción */
+  margin-bottom: 20px;
+
+  /* animación opcional elegante */
+  animation: fadeInScale 1.5s ease-in-out;
+}
+
+
+.splash-screen {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0f172a; /* oscuro elegante */
+}
+
+.splash-content {
+  text-align: center;
+}
