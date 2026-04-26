@@ -1,73 +1,74 @@
-import './App.css'
+import { useState, useEffect } from 'react'
+import './styles/animations.css'
+import './styles/splash.css'
+import './styles/home.css'
+
 import Logo_spark from './assets/spark-logo.png'
 
 function App() {
+  const [etapa, setEtapa] = useState('splash');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setEtapa('home');
+    }, 2500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // 🔹 SPLASH
+  if (etapa === 'splash') {
+    return (
+      <div className="splash-screen">
+        <div className="splash-content">
+          <img
+            src={Logo_spark}
+            className="splash-logo-anim"
+            alt="Logo Spark"
+          />
+          <h2 className="splash-text">
+            desde <span className="spark-accent">SPARK</span>
+          </h2>
+        </div>
+      </div>
+    );
+  }
+
+  // 🔹 HOME
   return (
     <div className="spark-app">
+      <nav className="spark-brand">
+        <img src={Logo_spark} width={30} alt="logo" />
+        <span className="spark-wordmark">SPARK | Clinical IA</span>
+      </nav>
+
       <main className="spark-container">
-        <header className="spark-brand">
-          <div className="spark-logo">
-            <img src={Logo_spark} alt="Logo Spark" width={44} height={44} />
-          </div>
-          <span className="spark-wordmark">SPARK</span>
-        </header>
+        <header className="spark-hero">
+          <span className="spark-eyebrow">Plataforma clínica</span>
 
-        <section className="spark-hero">
-          <span className="spark-eyebrow">Proyecto en construcción</span>
           <h1 className="spark-title">
-            Bienvenido al <span className="spark-title-accent">Escape Room Psicológico</span>
+            Plataforma de{' '}
+            <span className="spark-title-accent">
+              Asistencia Psicológica
+            </span>
           </h1>
+
           <p className="spark-subtitle">
-            Conversaciones guiadas con IA para entrevistas psicológicas estructuradas.
+            Herramientas de IA diseñadas para la práctica clínica ética y eficiente.
           </p>
-        </section>
 
-        <section className="spark-cards">
-          <article className="spark-card">
-            <span className="spark-card-dot spark-card-dot--coral" />
-            <h3>Frontend</h3>
-            <p>React · Vercel</p>
-          </article>
-          <article className="spark-card">
-            <span className="spark-card-dot spark-card-dot--navy" />
-            <h3>Backend</h3>
-            <p>Express · Railway</p>
-          </article>
-          <article className="spark-card">
-            <span className="spark-card-dot spark-card-dot--yellow" />
-            <h3>Datos e infra</h3>
-            <p>PostgreSQL · DevOps</p>
-          </article>
-        </section>
-
-        <aside className="spark-reminder">
-          <div className="spark-reminder-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z"
-                fill="#FFD166"
-                stroke="#26547C"
-                strokeWidth="1.2"
-                strokeLinejoin="round"
-              />
-            </svg>
+          <div className="botones-accion">
+            <button className="btn-primario">
+              Nueva Conversación
+            </button>
+            <button className="btn-secundario">
+              Ver Análisis de Pacientes
+            </button>
           </div>
-          <div className="spark-reminder-body">
-            <h4>Antes de empezar</h4>
-            <p>
-              Crea tu propia rama en el repo y confirma en el grupo de WhatsApp para que te delegue funciones.
-              Mientras tanto, explora las librerías de frontend y backend del stack — te va a servir para elegir en qué área quieres enfocarte.
-            </p>
-          </div>
-        </aside>
-
-        <footer className="spark-footer">
-          <span className="spark-pulse" />
-          <span>Listo para empezar a construir</span>
-        </footer>
+        </header>
       </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
