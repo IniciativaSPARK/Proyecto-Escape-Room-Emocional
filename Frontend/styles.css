@@ -1,0 +1,238 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-color-start: #0a0b12;
+  --bg-color-end: #17243c;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a8b8;
+  --accent-mint: #1ed760;
+  --accent-color: #2bd48f;
+  --accent-hover: #40e4a3;
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --input-border: rgba(255, 255, 255, 0.3);
+  --focus-ring: rgba(43, 212, 143, 0.5);
+  --border-radius-soft: 20px;
+  --border-radius-pill: 50px;
+  --transition-speed: 0.3s;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: radial-gradient(circle at top right, var(--bg-color-end) 0%, var(--bg-color-start) 80%);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Esferas flotantes 3D */
+.sphere {
+  position: fixed;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, var(--accent-color), #0a4d31, #021a10);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 0;
+  animation: float 15s infinite alternate ease-in-out;
+}
+
+.sphere-1 {
+  width: 140px;
+  height: 140px;
+  top: 10%;
+  left: 15%;
+  filter: blur(4px);
+  animation-duration: 12s;
+}
+
+.sphere-2 {
+  width: 220px;
+  height: 220px;
+  top: -5%;
+  right: 10%;
+  filter: blur(8px);
+  animation-duration: 18s;
+  animation-delay: -5s;
+}
+
+.sphere-3 {
+  width: 90px;
+  height: 90px;
+  bottom: 25%;
+  left: 20%;
+  filter: blur(2px);
+  animation-duration: 10s;
+  animation-delay: -2s;
+}
+
+.sphere-4 {
+  width: 180px;
+  height: 180px;
+  bottom: 10%;
+  right: 15%;
+  filter: blur(6px);
+  animation-duration: 15s;
+  animation-delay: -7s;
+}
+
+.sphere-5 {
+  width: 60px;
+  height: 60px;
+  top: 40%;
+  right: 5%;
+  filter: blur(1px);
+  animation-duration: 9s;
+  animation-delay: -4s;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+
+  100% {
+    transform: translateY(20px) rotate(-5deg);
+  }
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 500px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  padding: 48px;
+  border-radius: var(--border-radius-soft);
+  position: relative;
+  z-index: 1;
+  margin: auto;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.auth-logo {
+  width: 48px;
+  height: 48px;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.auth-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.auth-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-left: 12px;
+}
+
+.form-input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 24px;
+  background: transparent;
+  border: 1px solid var(--input-border);
+  border-radius: var(--border-radius-pill);
+  color: var(--text-primary);
+  font-size: 15px;
+  font-family: inherit;
+  font-weight: 400;
+  transition: all var(--transition-speed) ease;
+}
+
+.form-input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--text-primary);
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.auth-button {
+  width: 100%;
+  min-height: 48px;
+  background: var(--accent-color);
+  color: #000000;
+  border: none;
+  border-radius: var(--border-radius-pill);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  margin-top: 16px;
+}
+
+.auth-button:hover {
+  background: var(--accent-hover);
+  transform: scale(1.02);
+}
+
+.auth-button:active {
+  transform: scale(0.98);
+}
+
+.auth-footer {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.auth-link {
+  color: var(--text-primary);
+  text-decoration: underline;
+  font-weight: 600;
+  transition: all var(--transition-speed) ease;
+}
+
+.auth-link:hover {
+  color: var(--accent-hover);
+}

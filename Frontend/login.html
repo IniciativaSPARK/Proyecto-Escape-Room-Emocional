@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Escape Room Emocional</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="sphere sphere-1"></div>
+  <div class="sphere sphere-2"></div>
+  <div class="sphere sphere-3"></div>
+  <div class="sphere sphere-4"></div>
+  <div class="sphere sphere-5"></div>
+
+  <div class="auth-container">
+    <header class="auth-header">
+      <svg class="auth-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        <circle cx="12" cy="11" r="4"></circle>
+      </svg>
+      <h1 class="auth-title">Retoma tu viaje</h1>
+      <p class="auth-subtitle">Entra a tu espacio seguro</p>
+    </header>
+
+    <form class="auth-form" action="#" method="POST">
+      <div class="form-group">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" name="email" class="form-input" placeholder="tu@email.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" class="form-input" placeholder="••••••••" required>
+      </div>
+
+      <button type="submit" class="auth-button">Iniciar sesión</button>
+    </form>
+
+    <footer class="auth-footer">
+      <span>¿Aún no tienes cuenta?</span>
+      <a href="register.html" class="auth-link">Regístrate aquí</a>
+    </footer>
+  </div>
+</body>
+
+</html>
