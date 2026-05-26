@@ -22,3 +22,31 @@ Carpeta                 Propósito
 lib                     Configura y exporta herramientas/clientes externos (BD, SDKs, APIs)
 utils                   Funciones helpers pequeñas y puras (formatear fecha, validar email)
 services                Lógica de negocio de tu app (crear usuario, procesar pago)
+
+
+---
+
+Ejemplo de uso — db.js (conexión a la base de datos)
+
+db.js inicializa el pool de conexiones a Neon PostgreSQL usando la variable DATABASE_URL del .env.
+Solo se configura una vez aquí y se importa donde sea necesario.
+
+// En cualquier service o controller:
+import pool from '../lib/db.js';
+
+// Consulta simple
+const resultado = await pool.query('SELECT * FROM usuarios');
+console.log(resultado.rows);
+
+// Consulta con parámetros (evita SQL injection)
+const { rows } = await pool.query(
+  'SELECT * FROM usuarios WHERE id = $1',
+  [usuarioId]
+);
+console.log(rows[0]);
+
+// Insertar un registro
+await pool.query(
+  'INSERT INTO usuarios (nombre, email) VALUES ($1, $2)',
+  [nombre, email]
+);
