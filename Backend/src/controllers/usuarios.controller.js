@@ -57,3 +57,4 @@ export const deleteUsuario = (req, res) => {
   usuarios.splice(index, 1);
   res.status(204).send();
 };
+
