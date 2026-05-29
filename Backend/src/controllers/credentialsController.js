@@ -121,12 +121,13 @@ export const create = async (req, res) => {
 
     const {
       userId,
-      password
+      password,
+      username
     } = req.body;
 
-    if (!userId || !password) {
+    if (!userId || !password || !username) {
       return res.status(400).json({
-        error: 'Required fields: userId, password'
+        error: 'Required fields: userId, password, username'
       });
     }
 
@@ -144,13 +145,13 @@ export const create = async (req, res) => {
 
     // Check if credentials already exist
     const existingCredential = await pool.query(
-      'SELECT id FROM credentials WHERE user_id = $1',
-      [userId]
+      'SELECT id FROM credentials WHERE username = $1',
+      [username]
     );
 
     if (existingCredential.rows.length > 0) {
       return res.status(409).json({
-        error: 'Credentials already exist for this user'
+        error: 'The username is already taken'
       });
     }
 
@@ -162,18 +163,20 @@ export const create = async (req, res) => {
       INSERT INTO credentials
       (
         user_id,
+        username,
         password_hash
       )
       VALUES
       (
         $1,
-        $2
+        $2,
+        $3
       )
       RETURNING
         id,
         user_id,
         created_at
-    `, [userId, passwordHash]);
+    `, [userId, username, passwordHash]);
 
     res.status(201).json(result.rows[0]);
 

@@ -21,3 +21,10 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
+// any person can entrar por q no tenemos cors
+// cors : que dominions o ip pueden acceder
+// tipo de solicitudes
+
+// CORS permite o no tener http o https
+// 
