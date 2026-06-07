@@ -1,60 +1,95 @@
-let usuarios = [
-  { id: 1, nombre: 'Ana García', email: 'ana@spark.com' },
-  { id: 2, nombre: 'Luis Martínez', email: 'luis@spark.com' }
-]; 
 
-let nextId = 3;
+// En cualquier service o controller:
+import {
+  getUsuarios as getUsuariosService,
+  getUsuarioById as getUsuarioByIdService,
+  createUsuario as createUsuarioService,
+  updateUsuario as updateUsuarioService,
+  deleteUsuario as deleteUsuarioService,
+} from '../services/usuarios.service.js';
 
-export const getUsuarios = (req, res) => {
-  res.json(usuarios);
-};
-
-export const getUsuarioById = (req, res) => {
-  const id = parseInt(req.params.id);
-  const usuario = usuarios.find(u => u.id === id);
-  
-  if (!usuario) {
-    return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+export const getUsuarios = async (req, res) => {
+  try {
+    const usuarios = await getUsuariosService();
+    return res.json(usuarios);
+  } catch (error) {
+    console.error('Error al obtener usuarios:', error);
+    return res.status(500).json({ mensaje: 'Error interno al obtener usuarios' });
   }
-  
-  res.json(usuario);
 };
 
-export const createUsuario = (req, res) => {
+export const getUsuarioById = async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  if (Number.isNaN(id)) {
+    return res.status(400).json({ mensaje: 'ID inválido' });
+  }
+
+  try {
+    const usuario = await getUsuarioByIdService(id);
+    if (!usuario) {
+      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+    }
+    return res.json(usuario);
+  } catch (error) {
+    console.error('Error al obtener usuario por id:', error);
+    return res.status(500).json({ mensaje: 'Error interno al obtener usuario' });
+  }
+};
+
+export const createUsuario = async (req, res) => {
   const { nombre, email } = req.body;
-  
   if (!nombre || !email) {
     return res.status(400).json({ mensaje: 'Faltan campos requeridos' });
   }
-  
-  const nuevoUsuario = { id: nextId++, nombre, email };
-  usuarios.push(nuevoUsuario);
-  
-  res.status(201).json(nuevoUsuario);
+
+  try {
+    const nuevoUsuario = await createUsuarioService({ nombre, email });
+    return res.status(201).json(nuevoUsuario);
+  } catch (error) {
+    console.error('Error al crear usuario:', error);
+    return res.status(500).json({ mensaje: 'Error interno al crear usuario' });
+  }
 };
 
-export const updateUsuario = (req, res) => {
-  const id = parseInt(req.params.id);
+export const updateUsuario = async (req, res) => {
+  const id = parseInt(req.params.id, 10);
   const { nombre, email } = req.body;
-  const index = usuarios.findIndex(u => u.id === id);
-  
-  if (index === -1) {
-    return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+
+  if (Number.isNaN(id)) {
+    return res.status(400).json({ mensaje: 'ID inválido' });
   }
-  
-  usuarios[index] = { ...usuarios[index], nombre, email };
-  res.json(usuarios[index]);
+
+  if (!nombre || !email) {
+    return res.status(400).json({ mensaje: 'Faltan campos requeridos' });
+  }
+
+  try {
+    const usuarioActualizado = await updateUsuarioService(id, { nombre, email });
+    if (!usuarioActualizado) {
+      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+    }
+    return res.json(usuarioActualizado);
+  } catch (error) {
+    console.error('Error al actualizar usuario:', error);
+    return res.status(500).json({ mensaje: 'Error interno al actualizar usuario' });
+  }
 };
 
-export const deleteUsuario = (req, res) => {
-  const id = parseInt(req.params.id);
-  const index = usuarios.findIndex(u => u.id === id);
-  
-  if (index === -1) {
-    return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+export const deleteUsuario = async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  if (Number.isNaN(id)) {
+    return res.status(400).json({ mensaje: 'ID inválido' });
   }
-  
-  usuarios.splice(index, 1);
-  res.status(204).send();
+
+  try {
+    const usuarioEliminado = await deleteUsuarioService(id);
+    if (!usuarioEliminado) {
+      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+    }
+    return res.status(204).send();
+  } catch (error) {
+    console.error('Error al eliminar usuario:', error);
+    return res.status(500).json({ mensaje: 'Error interno al eliminar usuario' });
+  }
 };
 
