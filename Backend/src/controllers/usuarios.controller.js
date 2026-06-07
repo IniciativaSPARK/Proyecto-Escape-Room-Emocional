@@ -1,5 +1,3 @@
-
-// En cualquier service o controller:
 import {
   getUsuarios as getUsuariosService,
   getUsuarioById as getUsuarioByIdService,
@@ -11,85 +9,65 @@ import {
 export const getUsuarios = async (req, res) => {
   try {
     const usuarios = await getUsuariosService();
-    return res.json(usuarios);
+    res.json(usuarios);
   } catch (error) {
-    console.error('Error al obtener usuarios:', error);
-    return res.status(500).json({ mensaje: 'Error interno al obtener usuarios' });
+    res.status(500).json({ error: error.message });
   }
 };
 
 export const getUsuarioById = async (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  if (Number.isNaN(id)) {
-    return res.status(400).json({ mensaje: 'ID inválido' });
-  }
-
   try {
-    const usuario = await getUsuarioByIdService(id);
+    const usuario = await getUsuarioByIdService(req.params.id);
     if (!usuario) {
-      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+      return res.status(404).json({ error: 'Usuario no encontrado' });
     }
-    return res.json(usuario);
+    res.json(usuario);
   } catch (error) {
-    console.error('Error al obtener usuario por id:', error);
-    return res.status(500).json({ mensaje: 'Error interno al obtener usuario' });
+    res.status(500).json({ error: error.message });
   }
 };
 
 export const createUsuario = async (req, res) => {
-  const { nombre, email } = req.body;
-  if (!nombre || !email) {
-    return res.status(400).json({ mensaje: 'Faltan campos requeridos' });
-  }
-
   try {
-    const nuevoUsuario = await createUsuarioService({ nombre, email });
-    return res.status(201).json(nuevoUsuario);
-  } catch (error) {
-    console.error('Error al crear usuario:', error);
-    return res.status(500).json({ mensaje: 'Error interno al crear usuario' });
+    const { first_name, last_name, email, role_id, organization_id, phone, password } = req.body;
+    
+    // Validación básica
+    if (!first_name || !last_name || !email || !role_id || !organization_id || !password) {
+      return res.status(400).json({ 
+        error: 'Faltan campos requeridos: first_name, last_name, email, role_id, organization_id, password' 
+      });
+    }
+    
+    const nuevoUsuario = await createUsuarioService({ first_name, last_name, email, role_id, organization_id, phone, password });
+    res.status(201).json(nuevoUsuario);
+  } 
+  
+  catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
 export const updateUsuario = async (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  const { nombre, email } = req.body;
-
-  if (Number.isNaN(id)) {
-    return res.status(400).json({ mensaje: 'ID inválido' });
-  }
-
-  if (!nombre || !email) {
-    return res.status(400).json({ mensaje: 'Faltan campos requeridos' });
-  }
-
   try {
-    const usuarioActualizado = await updateUsuarioService(id, { nombre, email });
+    const { first_name, last_name, email, phone, is_active } = req.body;
+    const usuarioActualizado = await updateUsuarioService(req.params.id, { first_name, last_name, email, phone, is_active });
     if (!usuarioActualizado) {
-      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+      return res.status(404).json({ error: 'Usuario no encontrado' });
     }
-    return res.json(usuarioActualizado);
+    res.json(usuarioActualizado);
   } catch (error) {
-    console.error('Error al actualizar usuario:', error);
-    return res.status(500).json({ mensaje: 'Error interno al actualizar usuario' });
+    res.status(500).json({ error: error.message });
   }
 };
 
 export const deleteUsuario = async (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  if (Number.isNaN(id)) {
-    return res.status(400).json({ mensaje: 'ID inválido' });
-  }
-
   try {
-    const usuarioEliminado = await deleteUsuarioService(id);
+    const usuarioEliminado = await deleteUsuarioService(req.params.id);
     if (!usuarioEliminado) {
-      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+      return res.status(404).json({ error: 'Usuario no encontrado' });
     }
-    return res.status(204).send();
+    res.json(usuarioEliminado);
   } catch (error) {
-    console.error('Error al eliminar usuario:', error);
-    return res.status(500).json({ mensaje: 'Error interno al eliminar usuario' });
+    res.status(500).json({ error: error.message });
   }
 };
-
