@@ -1,5 +1,3 @@
-//Aqui tendremos el codigo principal del backend
-//Importaremos dependencias y configuraremos el servidor
 
 import express from 'express';
 import cors from 'cors';       

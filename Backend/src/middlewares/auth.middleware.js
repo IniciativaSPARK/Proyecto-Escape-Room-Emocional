@@ -23,10 +23,8 @@ export const authMiddleware = (req, res, next) => {
   } catch (error) {
     return res.status(401).json({ error: 'Token inválido o expirado' });
   }
-  // cuantos segundo podria estar activo un usuario en el sistema sin que el token expire (8 horas)
 };
 
-// Middleware de autorización: verifica que el usuario tenga el rol requerido
 export const authorize = (...rolesPermitidos) => {
   return (req, res, next) => {
     if (!req.user) {

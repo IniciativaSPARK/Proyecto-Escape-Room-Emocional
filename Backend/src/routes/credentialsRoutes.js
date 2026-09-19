@@ -11,10 +11,6 @@ import {
 
 const router = express.Router();
 
-// ======================================================
-// CREDENTIAL ROUTES
-// ======================================================
-
 router.get('/credentials', getAll);
 
 router.get('/credentials/:id', getById);
