@@ -1,283 +1,126 @@
-import bcrypt from 'bcrypt';
-import pool from '../lib/db.js';
-
-// ======================================================
-// GET ALL CREDENTIALS
-// ======================================================
-
-export const getAll = async (req, res) => {
-  try {
-    const result = await pool.query(`
-      SELECT 
-        c.id,
-        c.user_id,
-        u.first_name,
-        u.last_name,
-        u.email,
-        c.failed_login_attempts,
-        c.locked_until,
-        c.created_at
-      FROM credentials c
-      INNER JOIN users u
-        ON c.user_id = u.id
-      ORDER BY c.created_at DESC
-    `);
-
-    res.json(result.rows);
-
-  } catch (err) {
-    res.status(500).json({
-      error: err.message
-    });
-  }
-};
-
-// ======================================================
-// GET CREDENTIAL BY ID
-// ======================================================
-
-export const getById = async (req, res) => {
-  try {
-
-    const { id } = req.params;
-
-    const result = await pool.query(`
-      SELECT 
-        c.id,
-        c.user_id,
-        u.first_name,
-        u.last_name,
-        u.email,
-        c.failed_login_attempts,
-        c.locked_until,
-        c.created_at
-      FROM credentials c
-      INNER JOIN users u
-        ON c.user_id = u.id
-      WHERE c.id = $1
-    `, [id]);
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({
-        error: 'Credential not found'
-      });
-    }
-
-    res.json(result.rows[0]);
-
-  } catch (err) {
-    res.status(500).json({
-      error: err.message
-    });
-  }
-};
-
-// ======================================================
-// GET CREDENTIAL BY USER
-// ======================================================
-
-export const getByUser = async (req, res) => {
-  try {
-
-    const { userId } = req.params;
-
-    const user = await pool.query(
-      'SELECT id FROM users WHERE id = $1',
-      [userId]
-    );
-
-    if (user.rows.length === 0) {
-      return res.status(404).json({
-        error: 'User not found'
-      });
-    }
-
-    const result = await pool.query(`
-      SELECT 
-        id,
-        user_id,
-        failed_login_attempts,
-        locked_until,
-        created_at
-      FROM credentials
-      WHERE user_id = $1
-    `, [userId]);
-
-    res.json(result.rows);
-
-  } catch (err) {
-    res.status(500).json({
-      error: err.message
-    });
-  }
-};
-
-// ======================================================
-// CREATE CREDENTIAL
-// ======================================================
+import bcrypt from "bcrypt";
+import pool from "../lib/db.js";
+import {
+  getCredentialByUserId,
+  createCredential,
+} from "../services/credentialService.js";
 
 export const create = async (req, res) => {
   try {
-
-    const {
-      userId,
-      password,
-      username
-    } = req.body;
-
-    if (!userId || !password || !username) {
-      return res.status(400).json({
-        error: 'Required fields: userId, password, username'
-      });
-    }
-
-    // Verify user exists
-    const user = await pool.query(
-      'SELECT id FROM users WHERE id = $1',
-      [userId]
-    );
-
-    if (user.rows.length === 0) {
-      return res.status(404).json({
-        error: 'User not found'
-      });
-    }
-
-    // Check if credentials already exist
-    const existingCredential = await pool.query(
-      'SELECT id FROM credentials WHERE username = $1',
-      [username]
-    );
-
-    if (existingCredential.rows.length > 0) {
-      return res.status(409).json({
-        error: 'The username is already taken'
-      });
-    }
-
-    // Hash password
-    const passwordHash = await bcrypt.hash(password, 10);
-
-    // Insert credential
-    const result = await pool.query(`
-      INSERT INTO credentials
-      (
-        user_id,
-        username,
-        password_hash
-      )
-      VALUES
-      (
-        $1,
-        $2,
-        $3
-      )
-      RETURNING
-        id,
-        user_id,
-        created_at
-    `, [userId, username, passwordHash]);
-
-    res.status(201).json(result.rows[0]);
-
-  } catch (err) {
-    res.status(500).json({
-      error: err.message
-    });
+    const { userId } = req.params;
+    // llamar el usuario
+    const { username, password } = req.body;
+    const newCredential = await createCredential(userId, username, password);
+    res.status(201).json(newCredential);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "internal server error" });
   }
 };
 
-// ======================================================
-// UPDATE CREDENTIAL
-// ======================================================
-
-export const update = async (req, res) => {
+export const getCredential = async (req, res) => {
   try {
-
-    const { id } = req.params;
-
-    const {
-      password,
-      failed_login_attempts,
-      locked_until
-    } = req.body;
-
-    const credential = await pool.query(
-      'SELECT id FROM credentials WHERE id = $1',
-      [id]
-    );
-
-    if (credential.rows.length === 0) {
-      return res.status(404).json({
-        error: 'Credential not found'
-      });
+    const { userId } = req.params;
+    const credential = await getCredentialByUserId(userId);
+    if (!credential) {
+      return res.status(404).json({ error: "credential not found" });
     }
-
-    let passwordHash = null;
-
-    if (password) {
-      passwordHash = await bcrypt.hash(password, 10);
-    }
-
-    const result = await pool.query(`
-      UPDATE credentials
-      SET
-        password_hash = COALESCE($1, password_hash),
-        failed_login_attempts = COALESCE($2, failed_login_attempts),
-        locked_until = COALESCE($3, locked_until),
-        updated_at = NOW()
-      WHERE id = $4
-      RETURNING
-        id,
-        user_id,
-        failed_login_attempts,
-        locked_until,
-        updated_at
-    `, [
-      passwordHash,
-      failed_login_attempts ?? null,
-      locked_until ?? null,
-      id
-    ]);
-
-    res.json(result.rows[0]);
-
-  } catch (err) {
-    res.status(500).json({
-      error: err.message
-    });
+    res.status(200).json(credential);
+  } catch (error) {
+    res.status(500).json({ error: "internal server error" });
   }
 };
 
-// ======================================================
-// DELETE CREDENTIAL
-// ======================================================
-
-export const remove = async (req, res) => {
+export const login = async (req, res) => {
   try {
+    const { identifier, username, password } = req.body;
+    const userIdentifier = identifier || username;
 
-    const { id } = req.params;
+    if (!userIdentifier || !password) {
+      return res.status(400).json({ error: "Se requiere username y password" });
+    }
 
-    const result = await pool.query(`
-      DELETE FROM credentials
-      WHERE id = $1
-      RETURNING id, user_id
-    `, [id]);
+    const query = `
+            SELECT 
+                c.id AS credential_id,
+                c.username,
+                c.password_hash,
+                u.id AS user_id,
+                u.first_name AS "firstName",
+                u.last_name AS "lastName",
+                u.email,
+                u.role
+            FROM credentials c
+            INNER JOIN users u ON c.user_id = u.id
+            WHERE c.username = $1
+        `;
+
+    const result = await pool.query(query, [userIdentifier]);
 
     if (result.rows.length === 0) {
-      return res.status(404).json({
-        error: 'Credential not found'
-      });
+      return res.status(401).json({ error: "Credenciales inválidas" });
     }
 
-    res.json({
-      message: 'Credential deleted successfully',
-      credential: result.rows[0]
-    });
+    const userCredential = result.rows[0];
 
-  } catch (err) {
-    res.status(500).json({
-      error: err.message
+    const isPasswordValid = await bcrypt.compare(
+      password,
+      userCredential.password_hash,
+    );
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Credenciales inválidas" });
+    }
+
+    res.status(200).json({
+      message: "Login exitoso",
+      user: {
+        id: userCredential.user_id,
+        firstName: userCredential.firstName,
+        lastName: userCredential.lastName,
+        email: userCredential.email,
+        role: userCredential.role,
+      },
     });
+  } catch (error) {
+    console.error("Error en el login:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const updatePassword = async (req, res) => {
+  try {
+    const { id } = req.params; // Cambiamos userId por id
+    const { newPassword } = req.body;
+
+    if (!newPassword) {
+      return res.status(400).json({ error: "Se requiere la nueva contraseña" });
+    }
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+
+    // Buscamos directamente por el id de la tabla credentials
+    const query = `
+            UPDATE credentials 
+            SET password_hash = $1 
+            WHERE id = $2
+            RETURNING id, user_id
+        `;
+
+    const result = await pool.query(query, [hashedPassword, id]);
+
+    if (result.rows.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "Credencial o usuario no encontrado" });
+    }
+
+    res.status(200).json({
+      message: "Contraseña actualizada exitosamente",
+    });
+  } catch (error) {
+    console.error("Error al actualizar la contraseña:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };

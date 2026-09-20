@@ -171,3 +171,13 @@ Con esto se levanta Vite en `http://localhost:5173` y deberías ver la pantalla 
   <br/>
   <sub><strong>SPARK</strong> · Escape Room Psicológico</sub>
 </div>
+
+
+2/07/2026
+
+Creacion rama feature/leo_dev
+-conexion con neon y creacion de la tabla users
+-
+
+
+

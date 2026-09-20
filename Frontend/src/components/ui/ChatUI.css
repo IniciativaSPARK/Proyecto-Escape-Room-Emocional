@@ -1,0 +1,23 @@
+.chat-interface {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 350px;
+  background: var(--spark-light);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  border: 1px solid var(--spark-border);
+}
+
+.decision-buttons button {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background: var(--spark-navy);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}

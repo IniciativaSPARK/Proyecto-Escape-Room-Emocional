@@ -1,32 +1,72 @@
-import { useState } from 'react';
-import LoginView from './components/auth/LoginView';
-import PatientExperience from './components/patient/PatientExperience';
-import DashboardView from './components/professional/DashboardView';
+import { Canvas } from '@react-three/fiber';
+import { SceneBackground } from '../scene/SceneBackground';
+import { ChatUI } from '../ui/ChatUI';
+import { Suspense, useState, useEffect, useRef } from 'react';
+import { CameraControls } from '@react-three/drei';
+import { InteractiveObject } from '../scene/InteractiveObject';
+import { useGameStore } from '../../store/useGameStore';
 
-export default function App() {
-  // Estado del usuario autenticado (null si no ha iniciado sesión)
-  // Estructura esperada: { id, name, role: 'patient' | 'psychologist' }
-  const [user, setUser] = useState(null);
+export default function PatientExperience({ user, onLogout }) {
+  const [data, setData] = useState(null);
+  const [isRoomLoading, setIsRoomLoading] = useState(true);
+  const roomToLoad = "living_room_01";
+  
+  const cameraControlRef = useRef();
+  const selectedObject = useGameStore((state) => state.selectedObject);
+  const clearSelectedObject = useGameStore((state) => state.clearSelectedObject);
+  
+  useEffect(() => {
+    fetch(`http://localhost:3000/api/rooms/${roomToLoad}`)        
+      .then(res => res.json())
+      .then(json => {
+        setData(json);
+        setIsRoomLoading(false);
+      })
+      .catch(err => {
+        console.error("Error fetching room:", err);
+        setIsRoomLoading(false);
+      });
+  }, [roomToLoad]);
 
-  // 1. Si no hay usuario logueado, mostramos la pantalla de login institucional
-  if (!user) {
-    return <LoginView onLoginSuccess={(userData) => setUser(userData)} />;
+  useEffect(() => {
+    if (cameraControlRef.current) {
+      if (selectedObject) {
+        const [x, y, z] = selectedObject.position;
+        cameraControlRef.current.setLookAt(
+          x, y + 0.5, z + 2.5, 
+          x, y, z,          
+          true              
+        );
+      } else {
+        cameraControlRef.current.setLookAt(
+          0, 0, 5,
+          0, 0, 0,
+          true
+        );
+      }
+    }
+  }, [selectedObject]);
+
+  if (isRoomLoading || !data) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#111', color: '#fff' }}>
+        <h2>Cargando experiencia para {user?.name || 'Paciente'}...</h2>
+        <p style={{ color: '#aaa', margin: '10px 0' }}>Preparando entorno virtual</p>
+      </div>
+    );
   }
 
-  // 2. Si el rol es paciente, cargamos la experiencia del escape room 3D
-  if (user.role === 'patient') {
-    return <PatientExperience user={user} onLogout={() => setUser(null)} />;
-  }
-
-  // 3. Si el rol es psicólogo/terapeuta, cargamos el panel de gestión web
-  if (user.role === 'psychologist') {
-    return <DashboardView user={user} onLogout={() => setUser(null)} />;
-  }
-
-  // Fallback por seguridad si el rol no coincide
   return (
     <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
       
+      {/* Botón temporal de Cerrar Sesión en la esquina */}
+      <button 
+        onClick={onLogout}
+        style={{ position: 'absolute', top: '20px', right: '20px', zIndex: 1100, padding: '8px 16px', background: '#ef4444', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
+      >
+        Cerrar Sesión
+      </button>
+
       {/* 1. CAPA DE FONDO HTML CON BLUR DINÁMICO */}
       <div style={{
         position: 'absolute',
@@ -58,10 +98,9 @@ export default function App() {
 
         <Suspense fallback={null}>
           <SceneBackground />
-        {Array.isArray(data) && data.map(item => {
+          {data.map(item => {
             const isSelected = selectedObject && selectedObject.id === item.id;
 
-            // Si hay un objeto seleccionado y este NO es el seleccionado, lo removemos temporalmente de la vista
             if (selectedObject && !isSelected) {
               return null;
             }
@@ -84,23 +123,11 @@ export default function App() {
       {/* 3. CAPA DE INTERFAZ Y BOTONES */}
       <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 10, pointerEvents: 'none' }}>
         <div style={{ pointerEvents: 'auto' }}>
-          <ChatUI engine={engine} />
+          <ChatUI />
             
-       {selectedObject && (
+          {selectedObject && (
             <button
-              onClick={() => {
-                if (cameraControlRef.current) {
-                  // 1. Movemos la cámara fluidamente a la vista general
-                  cameraControlRef.current.setLookAt(0, 0, 5, 0, 0, 0, true);
-                  
-                  // 2. Esperamos a que termine la animación de la cámara (aprox 600ms) antes de mostrar los demás objetos
-                  setTimeout(() => {
-                    clearSelectedObject();
-                  }, 600);
-                } else {
-                  clearSelectedObject();
-                }
-              }}
+              onClick={clearSelectedObject}
               style={{
                 position: 'absolute',
                 top: '20px',

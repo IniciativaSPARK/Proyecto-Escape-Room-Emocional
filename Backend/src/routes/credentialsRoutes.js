@@ -1,30 +1,24 @@
-import express from 'express';
-
+import express from "express";
 import {
-  getAll,
-  getById,
-  getByUser,
   create,
-  update,
-  remove
-} from '../controllers/credentialsController.js';
+  getCredential,
+  login,
+  updatePassword,
+} from "../controllers/credentialsController.js";
+//llama todas las funciones creadas en el controller de credential
 
 const router = express.Router();
 
 // ======================================================
-// CREDENTIAL ROUTES
+// CREDENTIAL & AUTH ROUTES
 // ======================================================
 
-router.get('/credentials', getAll);
+router.post("/login", login);
 
-router.get('/credentials/:id', getById);
+router.post("/users/:userId/credentials", create);
 
-router.get('/users/:userId/credentials', getByUser);
+router.get("/users/:userId/credentials", getCredential);
 
-router.post('/credentials', create);
-
-router.put('/credentials/:id', update);
-
-router.delete('/credentials/:id', remove);
+router.put("/credentials/:id/password", updatePassword);
 
 export default router;
