@@ -126,10 +126,28 @@ export default function DashboardView({ user, onLogout }) {
         <div>
           <div style={styles.brandBox}>
             <span style={styles.brandTag}>Escape Room Emocional</span>
-            <h1 style={styles.brandTitle}>Puerta Clínica</h1>
+            <h1 style={styles.brandTitle}>TeApoyoAI</h1>
           </div>
 
           <nav style={styles.nav}>
+            <button
+              onClick={() => setActiveTab("templates")}
+              style={{
+                ...styles.navButton,
+                ...(activeTab === "templates" ? styles.navButtonActive : {}),
+              }}
+            >
+              Plantillas
+            </button>
+            <button
+              onClick={() => setActiveTab("notes")}
+              style={{
+                ...styles.navButton,
+                ...(activeTab === "notes" ? styles.navButtonActive : {}),
+              }}
+            >
+              Notas Clínicas
+            </button>
             <button
               onClick={() => setActiveTab("dashboard")}
               style={{
@@ -137,7 +155,7 @@ export default function DashboardView({ user, onLogout }) {
                 ...(activeTab === "dashboard" ? styles.navButtonActive : {}),
               }}
             >
-              📊 Panel / Métricas
+              Panel / Métricas
             </button>
             <button
               onClick={() => setActiveTab("clients")}
@@ -146,7 +164,7 @@ export default function DashboardView({ user, onLogout }) {
                 ...(activeTab === "clients" ? styles.navButtonActive : {}),
               }}
             >
-              👥 Gestor de Clientes
+              Gestor de Clientes
             </button>
             <button
               onClick={() => setActiveTab("protocols")}
@@ -155,7 +173,7 @@ export default function DashboardView({ user, onLogout }) {
                 ...(activeTab === "protocols" ? styles.navButtonActive : {}),
               }}
             >
-              🧠 Protocolos 3D / IA
+              Salas Interactivas con chats IA
             </button>
           </nav>
         </div>
@@ -215,58 +233,6 @@ export default function DashboardView({ user, onLogout }) {
             <div style={styles.errorBox}>
               Aviso de conexión: {error} (mostrando panel operativo)
             </div>
-          )}
-
-          {/* VISTA 1: MÉTRICAS DEL SISTEMA */}
-          {activeTab === "dashboard" && metrics && (
-            <>
-              <div style={styles.sectionHeader}>
-                <h2 style={styles.sectionTitle}>
-                  Métricas del Sistema de Credenciales y Base de Datos
-                </h2>
-                <p style={styles.sectionDesc}>
-                  Monitoreo en tiempo real de seguridad y conectividad con Neon
-                  DB.
-                </p>
-              </div>
-              <div style={styles.grid}>
-                <div style={styles.card}>
-                  <h3 style={styles.cardTitle}>Total de Usuarios</h3>
-                  <p style={styles.metricValue}>
-                    {metrics.totalUsers ?? "N/D"}
-                  </p>
-                  <span style={styles.metricSub}>Registrados en Neon DB</span>
-                </div>
-                <div style={styles.card}>
-                  <h3 style={styles.cardTitle}>Credenciales Activas</h3>
-                  <p style={styles.metricValue}>
-                    {metrics.totalCredentials ?? "N/D"}
-                  </p>
-                  <span style={styles.metricSub}>Relación 1:1 segura</span>
-                </div>
-                <div style={styles.card}>
-                  <h3 style={styles.cardTitle}>Intentos Fallidos de Login</h3>
-                  <p style={{ ...styles.metricValue, color: "#dc2626" }}>
-                    {metrics.failedLogins ?? 0}
-                  </p>
-                  <span style={styles.metricSub}>Auditoría de seguridad</span>
-                </div>
-                <div style={styles.card}>
-                  <h3 style={styles.cardTitle}>Estado del Servidor</h3>
-                  <p
-                    style={{
-                      ...styles.metricValue,
-                      color: "#16a34a",
-                      fontSize: "24px",
-                      marginTop: "14px",
-                    }}
-                  >
-                    {metrics.serverStatus || "Online"}
-                  </p>
-                  <span style={styles.metricSub}>Conectividad estable</span>
-                </div>
-              </div>
-            </>
           )}
 
           {/* VISTA 2 / PRINCIPAL: GESTIÓN DE CLIENTES */}
