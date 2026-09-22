@@ -329,7 +329,7 @@ export default function DashboardView({ user, onLogout }) {
 
           {activeTab === "protocols" && (
             <div style={styles.card}>
-              <h2>Configuración de Escenarios 3D y Prompts IA</h2>
+              <h2>Configuración de Escenarios </h2>
               <p
                 style={{
                   color: "#64748b",
@@ -337,8 +337,7 @@ export default function DashboardView({ user, onLogout }) {
                   marginTop: "10px",
                 }}
               >
-                Administra los disparadores emocionales y umbrales de
-                re-dirección terapéutica para la sesión inmersiva.
+                Administrar sesiones
               </p>
               <button
                 style={{ ...styles.primaryBtn, marginTop: "20px" }}
