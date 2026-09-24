@@ -127,7 +127,7 @@ export default function LoginView({ onLoginSuccess, onSwitchToRegister }) {
         </div>
       </div>
 
-      {/* SECCIÓN 2: VISIÓN Y PROPÓSITO (Al deslizar hacia abajo) */}
+      {/* SECCIÓN 2: VISIÓN, PROPÓSITO Y COMPARATIVA (Al deslizar hacia abajo) */}
       <div ref={visionSectionRef} style={styles.visionContainer}>
         <div style={styles.visionWrapper}>
           <h2 style={styles.visionMainTitle}>Nuestra Visión y Propósito</h2>
@@ -161,13 +161,68 @@ export default function LoginView({ onLoginSuccess, onSwitchToRegister }) {
               </p>
             </div>
           </div>
+
+          {/* NUEVO: CUADRO COMPARATIVO ESTILO MODERNO */}
+          <div style={styles.comparisonSection}>
+            <h3 style={styles.comparisonTitle}>
+              La Evolución de tu Práctica Clínica
+            </h3>
+            <p style={styles.comparisonSubtitle}>
+              Por qué TeApoyoAI supera a los métodos tradicionales
+            </p>
+
+            <div style={styles.tableContainer}>
+              <div style={styles.tableHeader}>
+                <div style={styles.columnHeaderOld}>Método Tradicional</div>
+                <div style={styles.columnHeaderNew}>Con TeApoyoAI 🚀</div>
+              </div>
+
+              {/* Fila 1 */}
+              <div style={styles.tableRow}>
+                <div style={styles.cellOld}>
+                  <span style={styles.crossIcon}>✕</span> Notas dispersas por
+                  sesión y archivos en papel sin conexión longitudinal.
+                </div>
+                <div style={styles.cellNew}>
+                  <span style={styles.checkIcon}>✓</span> Datos estructurados
+                  por paciente, síntomas y objetivos vinculados semana a semana.
+                </div>
+              </div>
+
+              {/* Fila 2 */}
+              <div style={styles.tableRowAlt}>
+                <div style={styles.cellOld}>
+                  <span style={styles.crossIcon}>✕</span> Cuestionarios y test
+                  largos que aburren y desconectan al paciente.
+                </div>
+                <div style={styles.cellNew}>
+                  <span style={styles.checkIcon}>✓</span> Salas interactivas y
+                  dinámicas tipo "Escape Room" que evalúan patrones de forma
+                  lúdica.
+                </div>
+              </div>
+
+              {/* Fila 3 */}
+              <div style={styles.tableRow}>
+                <div style={styles.cellOld}>
+                  <span style={styles.crossIcon}>✕</span> Procesos burocráticos
+                  pesados que quitan tiempo libre y familiar.
+                </div>
+                <div style={styles.cellNew}>
+                  <span style={styles.checkIcon}>✓</span> Gestión centralizada
+                  inteligente para optimizar tu tiempo y estar más con tu
+                  familia.
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-// Estilos actualizados con soporte para scroll continuo
+// Estilos actualizados con el nuevo cuadro comparativo
 const styles = {
   mainContainer: {
     width: "100%",
@@ -319,23 +374,22 @@ const styles = {
     textAlign: "center",
     border: "1px solid rgba(239, 68, 68, 0.4)",
   },
-  // Estilos para la sección inferior de visión
   visionContainer: {
     minHeight: "100vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    padding: "60px 20px",
+    padding: "80px 20px",
     backgroundColor: "#0b0f19",
     borderTop: "1px solid #1f2937",
   },
   visionWrapper: {
-    maxWidth: "800px",
+    maxWidth: "850px",
     width: "100%",
     textAlign: "center",
   },
   visionMainTitle: {
-    fontSize: "28px",
+    fontSize: "30px",
     fontWeight: "bold",
     color: "#f9fafb",
     marginBottom: "8px",
@@ -347,9 +401,10 @@ const styles = {
   },
   cardsGrid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
     gap: "24px",
     textAlign: "left",
+    marginBottom: "60px",
   },
   visionCard: {
     backgroundColor: "#1f2937",
@@ -379,5 +434,81 @@ const styles = {
     color: "#d1d5db",
     lineHeight: "1.6",
     margin: 0,
+  },
+  // Estilos del Cuadro Comparativo
+  comparisonSection: {
+    marginTop: "40px",
+    textAlign: "left",
+  },
+  comparisonTitle: {
+    fontSize: "22px",
+    fontWeight: "bold",
+    color: "#f9fafb",
+    textAlign: "center",
+    marginBottom: "6px",
+  },
+  comparisonSubtitle: {
+    fontSize: "14px",
+    color: "#9ca3af",
+    textAlign: "center",
+    marginBottom: "24px",
+  },
+  tableContainer: {
+    backgroundColor: "#1f2937",
+    border: "1px solid #374151",
+    borderRadius: "16px",
+    overflow: "hidden",
+  },
+  tableHeader: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    backgroundColor: "#111827",
+    borderBottom: "1px solid #374151",
+    textAlign: "center",
+    fontWeight: "600",
+    fontSize: "14px",
+  },
+  columnHeaderOld: {
+    padding: "16px",
+    color: "#ef4444",
+    borderRight: "1px solid #374151",
+  },
+  columnHeaderNew: {
+    padding: "16px",
+    color: "#3b82f6",
+  },
+  tableRow: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    borderBottom: "1px solid #374151",
+  },
+  tableRowAlt: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    borderBottom: "1px solid #374151",
+    backgroundColor: "rgba(31, 41, 55, 0.5)",
+  },
+  cellOld: {
+    padding: "20px",
+    fontSize: "13px",
+    color: "#9ca3af",
+    borderRight: "1px solid #374151",
+    lineHeight: "1.5",
+  },
+  cellNew: {
+    padding: "20px",
+    fontSize: "13px",
+    color: "#f9fafb",
+    lineHeight: "1.5",
+  },
+  crossIcon: {
+    color: "#ef4444",
+    fontWeight: "bold",
+    marginRight: "6px",
+  },
+  checkIcon: {
+    color: "#3b82f6",
+    fontWeight: "bold",
+    marginRight: "6px",
   },
 };
