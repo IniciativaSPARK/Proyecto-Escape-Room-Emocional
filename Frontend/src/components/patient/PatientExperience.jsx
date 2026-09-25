@@ -1,154 +1,209 @@
-import { Canvas } from '@react-three/fiber';
-import { SceneBackground } from '../scene/SceneBackground';
-import { ChatUI } from '../ui/ChatUI';
-import { Suspense, useState, useEffect, useRef } from 'react';
-import { CameraControls } from '@react-three/drei';
-import { InteractiveObject } from '../scene/InteractiveObject';
-import { useGameStore } from '../../store/useGameStore';
+import React from "react";
+import ChatUI from "../ui/ChatUI"; // <--- SIN LLAVES
 
 export default function PatientExperience({ user, onLogout }) {
-  const [data, setData] = useState(null);
-  const [isRoomLoading, setIsRoomLoading] = useState(true);
-  const roomToLoad = "living_room_01";
-  
-  const cameraControlRef = useRef();
-  const selectedObject = useGameStore((state) => state.selectedObject);
-  const clearSelectedObject = useGameStore((state) => state.clearSelectedObject);
-  
-  useEffect(() => {
-    fetch(`http://localhost:3000/api/rooms/${roomToLoad}`)        
-      .then(res => res.json())
-      .then(json => {
-        setData(json);
-        setIsRoomLoading(false);
-      })
-      .catch(err => {
-        console.error("Error fetching room:", err);
-        setIsRoomLoading(false);
-      });
-  }, [roomToLoad]);
-
-  useEffect(() => {
-    if (cameraControlRef.current) {
-      if (selectedObject) {
-        const [x, y, z] = selectedObject.position;
-        cameraControlRef.current.setLookAt(
-          x, y + 0.5, z + 2.5, 
-          x, y, z,          
-          true              
-        );
-      } else {
-        cameraControlRef.current.setLookAt(
-          0, 0, 5,
-          0, 0, 0,
-          true
-        );
-      }
-    }
-  }, [selectedObject]);
-
-  if (isRoomLoading || !data) {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#111', color: '#fff' }}>
-        <h2>Cargando experiencia para {user?.name || 'Paciente'}...</h2>
-        <p style={{ color: '#aaa', margin: '10px 0' }}>Preparando entorno virtual</p>
-      </div>
-    );
-  }
-
   return (
-    <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
-      
-      {/* Botón temporal de Cerrar Sesión en la esquina */}
-      <button 
-        onClick={onLogout}
-        style={{ position: 'absolute', top: '20px', right: '20px', zIndex: 1100, padding: '8px 16px', background: '#ef4444', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
-      >
-        Cerrar Sesión
-      </button>
+    <div style={styles.layout}>
+      {/* 1. PANEL LATERAL IZQUIERDO */}
+      <div style={styles.sidebar}>
+        <div style={styles.sidebarHeader}>
+          <h3 style={styles.brandTitle}>TeApoyoAI</h3>
+          <span style={styles.brandSubtitle}>Espacio Clínico</span>
+        </div>
 
-      {/* 1. CAPA DE FONDO HTML CON BLUR DINÁMICO */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundImage: 'url(/src/assets/scene1.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        filter: selectedObject ? 'blur(8px)' : 'blur(0px)',
-        transition: 'filter 0.6s ease-in-out',
-        zIndex: 0
-      }} />
+        <div style={styles.patientProfile}>
+          <div style={styles.avatarUser}>👤</div>
+          <div>
+            <h4 style={styles.patientName}>{user?.name || "Elena García"}</h4>
+            <span style={styles.sessionBadge}>• Sesión Activa #4</span>
+          </div>
+        </div>
 
-      {/* 2. CAPA 3D */}
-      <Canvas 
-        camera={{ position: [0, 0, 5] }} 
-        gl={{ alpha: true, antialias: true }} 
-        style={{ position: 'absolute', zIndex: 1, pointerEvents: 'auto' }}
-      > 
-        <ambientLight intensity={0.7} /> 
-        
-        <CameraControls 
-          ref={cameraControlRef} 
-          minDistance={2}
-          maxDistance={6}
-        />
+        <div style={styles.sectionCard}>
+          <h5 style={styles.sectionTitle}>OBJETIVO TERAPÉUTICO</h5>
+          <p style={styles.sectionMainText}>Regulación Emocional y Desahogo</p>
+          <span style={styles.sectionSubText}>
+            Enfoque: Aceptación y Compasión
+          </span>
+        </div>
 
-        <Suspense fallback={null}>
-          <SceneBackground />
-          {data.map(item => {
-            const isSelected = selectedObject && selectedObject.id === item.id;
+        <div style={styles.historySection}>
+          <h5 style={styles.sectionTitle}>HISTORIAL DE SESIONES</h5>
+          <div style={{ ...styles.historyItem, ...styles.historyItemActive }}>
+            Hoy • Regulación Activa
+          </div>
+          <div style={styles.historyItem}>
+            18 Oct • Identificación de Disparadores
+          </div>
+          <div style={styles.historyItem}>11 Oct • Exploración de Patrones</div>
+          <div style={styles.historyItem}>
+            04 Oct • Encuadre Inicial y Alianza
+          </div>
+          <div style={styles.historyItem}>Biblioteca de Recursos y Guías</div>
+        </div>
 
-            if (selectedObject && !isSelected) {
-              return null;
-            }
-
-            return (
-              <InteractiveObject 
-                key={item.id}
-                modelPath={item.modelPath}
-                position={item.position}
-                scale={item.scale}
-                rotation={item.rotation || [0, 0, 0]}
-                id={item.id}
-                message={() => {}}
-              />
-            );
-          })}
-        </Suspense>
-      </Canvas>
-
-      {/* 3. CAPA DE INTERFAZ Y BOTONES */}
-      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 10, pointerEvents: 'none' }}>
-        <div style={{ pointerEvents: 'auto' }}>
-          <ChatUI />
-            
-          {selectedObject && (
-            <button
-              onClick={clearSelectedObject}
-              style={{
-                position: 'absolute',
-                top: '20px',
-                left: '20px',
-                padding: '10px 20px',
-                backgroundColor: '#2563eb',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontSize: '16px',
-                zIndex: 1000,
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)',
-              }}
-            >
-              Volver a la habitación
-            </button>
-          )}
+        <div style={styles.sidebarFooter}>
+          <button style={styles.sosButton}>
+            SOS Pausar y contactar a mi terapeuta
+          </button>
+          <span style={styles.versionText}>Consentimiento Clínico v2.4</span>
         </div>
       </div>
 
+      {/* 2. PANEL DERECHO (Chat Clínico) */}
+      <div style={styles.mainContent}>
+        <div style={styles.topBar}>
+          <div style={styles.securityBadge}>
+            <span>🔒 Espacio confidencial y cifrado de extremo a extremo</span>
+            <span style={styles.supervisionTag}>Supervisión Asistida</span>
+          </div>
+
+          <button onClick={onLogout} style={styles.logoutButton}>
+            Cerrar Sesión
+          </button>
+        </div>
+
+        <div style={styles.chatWrapper}>
+          <ChatUI />
+        </div>
+      </div>
     </div>
   );
 }
+
+const styles = {
+  layout: {
+    display: "flex",
+    height: "100vh",
+    width: "100vw",
+    backgroundColor: "#0b0f19",
+    color: "#f9fafb",
+    fontFamily: "Inter, sans-serif",
+    overflow: "hidden",
+  },
+  sidebar: {
+    width: "280px",
+    backgroundColor: "#111827",
+    borderRight: "1px solid #1f2937",
+    display: "flex",
+    flexDirection: "column",
+    padding: "20px",
+    gap: "16px",
+    flexShrink: 0,
+  },
+  sidebarHeader: { borderBottom: "1px solid #1f2937", paddingBottom: "12px" },
+  brandTitle: {
+    fontSize: "16px",
+    fontWeight: "bold",
+    margin: 0,
+    color: "#fff",
+  },
+  brandSubtitle: { fontSize: "12px", color: "#9ca3af" },
+  patientProfile: { display: "flex", alignItems: "center", gap: "10px" },
+  avatarUser: {
+    fontSize: "20px",
+    background: "#1f2937",
+    padding: "8px",
+    borderRadius: "50%",
+  },
+  patientName: { fontSize: "13px", fontWeight: "600", margin: 0 },
+  sessionBadge: { fontSize: "11px", color: "#34d399" },
+  sectionCard: {
+    backgroundColor: "#1f2937",
+    padding: "12px",
+    borderRadius: "8px",
+    border: "1px solid #374151",
+  },
+  sectionTitle: {
+    fontSize: "10px",
+    color: "#9ca3af",
+    letterSpacing: "0.5px",
+    marginBottom: "6px",
+    margin: 0,
+  },
+  sectionMainText: { fontSize: "12px", fontWeight: "600", margin: "4px 0" },
+  sectionSubText: { fontSize: "11px", color: "#93c5fd" },
+  historySection: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "4px",
+    flex: 1,
+    overflowY: "auto",
+  },
+  historyItem: {
+    fontSize: "12px",
+    color: "#9ca3af",
+    padding: "6px 8px",
+    borderRadius: "4px",
+    cursor: "pointer",
+  },
+  historyItemActive: {
+    backgroundColor: "#1f2937",
+    color: "#fff",
+    fontWeight: "500",
+  },
+  sidebarFooter: {
+    borderTop: "1px solid #1f2937",
+    paddingTop: "12px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
+  },
+  sosButton: {
+    backgroundColor: "#ef4444",
+    color: "#fff",
+    border: "none",
+    padding: "8px",
+    borderRadius: "6px",
+    fontSize: "11px",
+    fontWeight: "bold",
+    cursor: "pointer",
+  },
+  versionText: { fontSize: "10px", color: "#6b7280", textAlign: "center" },
+  mainContent: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    backgroundColor: "#0b0f19",
+    overflow: "hidden",
+  },
+  topBar: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "12px 24px",
+    borderBottom: "1px solid #1f2937",
+    backgroundColor: "#111827",
+  },
+  securityBadge: {
+    display: "flex",
+    gap: "16px",
+    fontSize: "12px",
+    color: "#9ca3af",
+    alignItems: "center",
+  },
+  supervisionTag: {
+    backgroundColor: "#1f2937",
+    color: "#60a5fa",
+    padding: "2px 8px",
+    borderRadius: "4px",
+    fontSize: "11px",
+    border: "1px solid #374151",
+  },
+  logoutButton: {
+    padding: "6px 14px",
+    background: "#ef4444",
+    color: "#fff",
+    border: "none",
+    borderRadius: "6px",
+    fontSize: "12px",
+    fontWeight: "600",
+    cursor: "pointer",
+  },
+  chatWrapper: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    overflow: "hidden",
+  },
+};
