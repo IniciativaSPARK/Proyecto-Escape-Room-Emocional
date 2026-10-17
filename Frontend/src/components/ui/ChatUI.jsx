@@ -40,7 +40,7 @@ export default function ChatUI() {
         },
         body: JSON.stringify({
           message: userText,
-          history: updatedMessages,
+          history: formattedHistory,
         }),
       });
 
