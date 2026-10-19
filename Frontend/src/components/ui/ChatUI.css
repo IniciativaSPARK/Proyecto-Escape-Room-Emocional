@@ -3,11 +3,11 @@
   bottom: 20px;
   right: 20px;
   width: 350px;
-  background: var(--spark-light);
+  background: var(--spark-lino); /* Usando el color Lino de tu sistema */
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  border: 1px solid var(--spark-border);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--spark-niebla); /* Usando Niebla para los bordes */
 }
 
 .decision-buttons button {
@@ -15,9 +15,19 @@
   width: 100%;
   margin-top: 10px;
   padding: 10px;
-  background: var(--spark-navy);
-  color: white;
+  background: var(
+    --spark-space-cadet
+  ); /* Usando Space Cadet para darle solidez clínica */
+  color: var(--spark-lino); /* Texto claro para contraste */
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.decision-buttons button:hover {
+  background: var(
+    --spark-eucalipto
+  ); /* Un toque de Eucalipto al pasar el mouse */
 }

@@ -6,7 +6,7 @@
    - Coral  #FF8C66
    - Light  #F5F5F5
    - Dark   #222222
-   ======================================== */
+  
 :root {
   --spark-navy: #26547C;
   --spark-yellow: #FFD166;
@@ -16,7 +16,24 @@
   --spark-muted: #6B7280;
   --spark-border: rgba(34, 34, 34, 0.08);
 }
+ ======================================== */
 
+:root {
+  /* Colores Primarios */
+  --spark-eucalipto: #6b9b7e;
+  --spark-lino: #fbf8f3;
+  --spark-space-cadet: #2d3b36;
+
+  /* Colores Secundarios */
+  --spark-durazno: #f4a988;
+  --spark-miel: #f5d89b;
+  --spark-cielo: #a8c5d4;
+
+  /* Colores Soporte */
+  --spark-arena: #f2ede3;
+  --spark-niebla: #8b9690;
+  --spark-terracota: #c97b63;
+}
 
 * {
   box-sizing: border-box;
@@ -24,7 +41,8 @@
   padding: 0;
 }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   background: var(--spark-light);
   color: var(--spark-dark);

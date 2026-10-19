@@ -142,14 +142,38 @@ export default function ChatUI() {
     </div>
   );
 }
-
 const styles = {
   chatContainer: {
-    display: "flex",
-    flexDirection: "column",
-    height: "100%",
-    padding: "0 20px",
-    overflow: "hidden",
+    // ...
+    backgroundColor: "#2D3B36", // Base: Space Cadet (Integrado y oscuro)
+  },
+  aiBubble: {
+    backgroundColor: "#F2EDE3", // Arena (Burbuja clara y cálida para la IA)
+    // ...
+    border: "1px solid #8B9690", // Niebla
+  },
+  userBubble: {
+    backgroundColor: "#6B9B7E", // Eucalipto (Burbuja usuario)
+    color: "#FBF8F3", // Texto: Lino
+    // ...
+  },
+  messageText: {
+    // ...
+    color: "#2D3B36", // Texto oscuro (Para leer sobre Arena y Eucalipto)
+  },
+  inputWrapper: {
+    backgroundColor: "#FBF8F3", // Caja clara: Lino
+    border: "1px solid #8B9690", // Niebla
+    // ...
+  },
+  textInput: {
+    // ...
+    color: "#2D3B36", // Space Cadet
+  },
+  sendButton: {
+    backgroundColor: "#A8C5D4", // Acento suave: Cielo (Más frío, más serio)
+    color: "#2D3B36", // Space Cadet
+    // ...
   },
   messagesList: {
     flex: 1,
@@ -165,7 +189,7 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     height: "100%",
-    color: "#9ca3af",
+    color: "#8B9690", // Niebla
     textAlign: "center",
     gap: "8px",
   },
@@ -179,17 +203,17 @@ const styles = {
   },
   avatarAi: { fontSize: "20px" },
   aiBubble: {
-    backgroundColor: "#1f2937",
+    backgroundColor: "#F2EDE3", // Arena (Burbuja clara y cálida para la IA)
     padding: "14px",
     borderRadius: "12px",
-    border: "1px solid #374151",
+    border: "1px solid #8B9690", // Niebla
     display: "flex",
     flexDirection: "column",
     gap: "6px",
   },
   userBubble: {
-    backgroundColor: "#2563eb",
-    color: "#fff",
+    backgroundColor: "#6B9B7E", // Eucalipto (Burbuja del usuario)
+    color: "#FBF8F3", // Lino
     padding: "14px",
     borderRadius: "12px",
     display: "flex",
@@ -200,9 +224,9 @@ const styles = {
     fontSize: "14px",
     margin: 0,
     lineHeight: "1.5",
-    color: "#f9fafb",
+    color: "#2D3B36", // Space Cadet (Texto oscuro para lectura clara sobre el fondo Arena)
   },
-  timestamp: { fontSize: "10px", color: "#9ca3af", alignSelf: "flex-end" },
+  timestamp: { fontSize: "10px", color: "#8B9690", alignSelf: "flex-end" }, // Niebla
   inputArea: {
     padding: "10px 0 20px 0",
     display: "flex",
@@ -211,8 +235,8 @@ const styles = {
   },
   inputWrapper: {
     display: "flex",
-    backgroundColor: "#1f2937",
-    border: "1px solid #374151",
+    backgroundColor: "#FBF8F3", // Lino (Caja de texto clara e identificable)
+    border: "1px solid #8B9690", // Niebla
     borderRadius: "10px",
     padding: "8px",
     alignItems: "center",
@@ -222,14 +246,14 @@ const styles = {
     flex: 1,
     background: "transparent",
     border: "none",
-    color: "#fff",
+    color: "#2D3B36", // Space Cadet (Texto que escribe el usuario)
     fontSize: "14px",
     outline: "none",
     padding: "4px",
   },
   sendButton: {
-    backgroundColor: "#2563eb",
-    color: "#fff",
+    backgroundColor: "#F4A988", // Durazno (Acento llamativo y cálido para enviar)
+    color: "#2D3B36", // Space Cadet
     border: "none",
     padding: "8px 14px",
     borderRadius: "6px",
@@ -239,7 +263,7 @@ const styles = {
   },
   disclaimerText: {
     fontSize: "10px",
-    color: "#6b7280",
+    color: "#8B9690", // Niebla
     textAlign: "center",
     margin: 0,
   },
